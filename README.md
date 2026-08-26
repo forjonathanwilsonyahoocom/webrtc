@@ -1,5 +1,23 @@
 # webrtc
 
+**ALPHA DO NOT USE THIS, EDUCATIONAL PURPOSES ONLY**
+
+### Explanation
+
+| Section | What it does |
+|---------|--------------|
+| `coturn.build` | Builds the image from the Dockerfile you just created. |
+| `environment` | Passes variables into the container; you can also set `TURN_USER`/`TURN_PASS` if you want a simple username/password. |
+| `volumes` | *`turnserver.conf`*: overrides the image default with your TLS paths, port ranges, etc. <br>*`turnuserdb.txt`*: optional database file for many users.<br>*`certs`*: mount your Let's‑Encrypt certs. |
+| `expose` | Internal ports visible to other containers on the same bridge network. |
+| `proxy` | The reverse proxy exposes 443/80 to the world and forwards `/ws` → WebSocket server, `/janus` → Janus, and `/turn` → coturn (if you expose `/turn` on the proxy). |
+
+> **Optional**: If you prefer not to expose the TURN port to the outside world (you’ll only use it internally), simply omit the `ports` block under `coturn`. Only the proxy will reach it via the internal Docker 
+network.
+
+
+
+
 You can use the official `coturn/coturn` image from Docker Hub, but it doesn’t expose TLS out of the box.  
 A small custom Dockerfile gives you full control.
 
