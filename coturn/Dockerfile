@@ -12,9 +12,9 @@ RUN mkdir -p /etc/turnserver && \
 COPY turnserver.conf /etc/turnserver/turnserver.conf
 
 # Expose ports
-EXPOSE 3478/udp   # STUN/TURN
-EXPOSE 3478/tcp   # TURN (optional)
-EXPOSE 5349/tcp   # TLS
+EXPOSE 3478/udp 
+EXPOSE 3478/tcp
+EXPOSE 5349/tcp
 
 ENTRYPOINT ["/usr/sbin/turnserver", "-c", "/etc/turnserver/turnserver.conf", "-l", "/var/log/turnserver/turnserver.log"]
 
