@@ -1,10 +1,16 @@
-import Janus from "janus-gateway";
 import "webrtc-adapter";
+
+const Janus = window.Janus;
+
+if (!Janus) {
+  throw new Error("Janus JavaScript library was not loaded");
+}
 
 Janus.init({
   debug: "all",
   callback() {
-    console.log("Janus client initialized");
+    console.log("Janus initialized");
   }
 });
+
 

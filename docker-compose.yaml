@@ -1,6 +1,12 @@
 version: "3.9"
 
 services:
+
+  frontend:
+    build: ./audio-room-client
+    expose:
+      - "80"
+
   websocket:
     build: ./ws
     container_name: websocket
