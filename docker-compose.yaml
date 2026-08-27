@@ -35,12 +35,12 @@ services:
   coturn:
     build: ./coturn
     environment:
-      - TURN_USERDB=/etc/turnserver/turnuserdb.txt
-      #- TURN_USER=demo
-      #- TURN_PASS=demo
+      #- TURN_USERDB=/etc/turnserver/turnuserdb.txt
+      - TURN_USER=demo
+      - TURN_PASS=demo
     volumes:
       - ./turn/turnserver.conf:/etc/turnserver/turnserver.conf:ro
-      - ./turn/turnuserdb.txt:/etc/turnserver/turnuserdb.txt:ro
+      #- ./turn/turnuserdb.txt:/etc/turnserver/turnuserdb.txt:ro
       - ./certs:/etc/letsencrypt/live/your.domain:ro
     expose:
       - "3478/udp"

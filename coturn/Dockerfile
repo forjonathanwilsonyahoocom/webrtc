@@ -16,5 +16,5 @@ EXPOSE 3478/udp
 EXPOSE 3478/tcp
 EXPOSE 5349/tcp
 
-ENTRYPOINT ["/usr/sbin/turnserver", "-c", "/etc/turnserver/turnserver.conf", "-l", "/var/log/turnserver/turnserver.log"]
+ENTRYPOINT ["/usr/bin/turnserver", "-c", "/etc/turnserver/turnserver.conf", "-l", "/var/log/turnserver/turnserver.log"]
 
