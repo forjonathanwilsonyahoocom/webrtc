@@ -5,20 +5,37 @@ services:
   websocket:
     image: node:20-alpine
     working_dir: /app
-    command: node index.js
+    command: sh -c "npm install --omit=dev && node index.js"
     volumes:
       - ./ws:/app
     environment:
       - WS_PORT=3000
     expose:
       - "3000"
-
+  
   janus:
-    image: jitsi/janus-gateway
-    environment:
-      - JINGLE_PORT=8088
-    expose:
-      - "8088"
+    build:
+      context: ./janus
+      dockerfile: Dockerfile
+      args:
+        JANUS_VERSION: v1.3.1
+
+    image: janus-gateway:local
+    container_name: janus
+
+    ports:
+      - "8088:8088"                 # Janus HTTP transport
+      - "8089:8089"                 # Janus HTTPS transport, if enabled
+      - "8188:8188"                 # Janus Admin HTTP transport
+      - "8189:8189"                 # Janus Admin WebSocket transport
+      - "10000-10200:10000-10200/udp" # RTP/RTCP media range
+
+    restart: unless-stopped
+    # Optional: mount your own janus.cfg if you have one
+    # volumes:
+    #   - ./janus.cfg:/usr/local/etc/janus/janus.cfg
+
+
 
   coturn:
     build: ./coturn          # builds from the Dockerfile above
