@@ -2,6 +2,16 @@
 
 **ALPHA DO NOT USE THIS, EDUCATIONAL PURPOSES ONLY**
 
+mkdir -p certs
+
+openssl req -x509 -nodes -newkey rsa:2048 \
+  -keyout certs/privkey.pem \
+  -out certs/fullchain.pem \
+  -days 365 \
+  -subj "/CN=localhost" \
+  -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
+
+
 ### Explanation
 
 | Section | What it does |

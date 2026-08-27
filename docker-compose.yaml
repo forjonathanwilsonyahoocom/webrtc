@@ -21,28 +21,24 @@ services:
     container_name: janus
 
     ports:
-      - "8088:8088"                 # Janus HTTP transport
-      - "8089:8089"                 # Janus HTTPS transport, if enabled
-      - "8188:8188"                 # Janus Admin HTTP transport
-      - "8189:8189"                 # Janus Admin WebSocket transport
-      - "10000-10200:10000-10200/udp" # RTP/RTCP media range
+      - "8088:8088" 
+      - "8089:8089"
+      - "8188:8188"
+      - "8189:8189"
+      - "10000-10200:10000-10200/udp"
 
     restart: unless-stopped
     # Optional: mount your own janus.cfg if you have one
     # volumes:
     #   - ./janus.cfg:/usr/local/etc/janus/janus.cfg
 
-
-
   coturn:
-    build: ./coturn          # builds from the Dockerfile above
+    build: ./coturn
     environment:
-      # If you want to use a separate user DB
-      # - TURN_USERDB=/etc/turnserver/turnuserdb.txt
-      - TURN_USER=demo
-      - TURN_PASS=demo
+      - TURN_USERDB=/etc/turnserver/turnuserdb.txt
+      #- TURN_USER=demo
+      #- TURN_PASS=demo
     volumes:
-      # Mount your TLS certs and config override
       - ./turn/turnserver.conf:/etc/turnserver/turnserver.conf:ro
       - ./turn/turnuserdb.txt:/etc/turnserver/turnuserdb.txt:ro
       - ./certs:/etc/letsencrypt/live/your.domain:ro
@@ -50,6 +46,9 @@ services:
       - "3478/udp"
       - "3478/tcp"
       - "5349/tcp"
+    ports:
+      - "3478:3478/tcp"
+      - "3478:3478/udp"
     # If you want coturn to listen on the host’s external IP only:
     # networks:
     #   default:
