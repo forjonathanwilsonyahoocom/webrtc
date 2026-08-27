@@ -26,11 +26,13 @@ services:
       - "8188:8188"
       - "8189:8189"
       - "10000-10200:10000-10200/udp"
+      - "7088:7088"
+      - "7089:7089"
 
     restart: unless-stopped
     # Optional: mount your own janus.cfg if you have one
-    # volumes:
-    #   - ./janus.cfg:/usr/local/etc/janus/janus.cfg
+    volumes:
+      - ./janus.cfg:/usr/local/etc/janus/janus.cfg
 
   coturn:
     build: ./coturn
