@@ -54,7 +54,7 @@ services:
     volumes:
       - ./turn/turnserver.conf:/etc/turnserver/turnserver.conf:ro
       #- ./turn/turnuserdb.txt:/etc/turnserver/turnuserdb.txt:ro
-      - ${LETSENCRYPT_PATH}:${LETSENCRYPT_PATH}:ro 
+      - ${LETSENCRYPT_PATH}:/etc/letsencrypt/live/:ro 
     expose:
       - "3478/udp"
       - "3478/tcp"
