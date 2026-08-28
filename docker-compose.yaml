@@ -26,14 +26,14 @@ services:
     image: janus-gateway:local
     container_name: janus
 
-    ports:
-      - "8088:8088" 
-      - "8089:8089"
-      - "8188:8188"
-      - "8189:8189"
-      - "10000-10200:10000-10200/udp"
-      - "7088:7088"
-      - "7089:7089"
+    #ports:
+    # - "8088:8088" 
+    # - "8089:8089"
+    # - "8188:8188"
+    # - "8189:8189"
+     - "10000-10200:10000-10200/udp"
+    # - "7088:7088"
+    # - "7089:7089"
     environment:
       - JANUS_CERT_PEM=${LETSENCRYPT_PATH}/fullchain.pem
       - JANUS_CERT_KEY=${LETSENCRYPT_PATH}/privkey.pem
@@ -59,7 +59,7 @@ services:
       - "3478/udp"
       - "3478/tcp"
       - "5349/tcp"
-    ports:
+    #ports:
       - "3478:3478/tcp"
       - "3478:3478/udp"
     # If you want coturn to listen on the host’s external IP only:
