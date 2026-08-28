@@ -34,10 +34,14 @@ services:
       - "10000-10200:10000-10200/udp"
       - "7088:7088"
       - "7089:7089"
+    environment:
+      - JANUS_CERT_PEM=${LETSENCRYPT_PATH}/fullchain.pem
+      - JANUS_CERT_KEY=${LETSENCRYPT_PATH}/privkey.pem
 
     restart: unless-stopped
     # Optional: mount your own janus.cfg if you have one
     volumes:
+      - ${LETSENCRYPT_PATH}:${LETSENCRYPT_PATH}:ro
       - ./janus/janus.jcfg:/opt/janus/etc/janus/janus.jcfg
       - ./janus/janus.transport.http.jcfg:/opt/janus/etc/janus/janus.transport.http.jcfg
 
@@ -50,7 +54,7 @@ services:
     volumes:
       - ./turn/turnserver.conf:/etc/turnserver/turnserver.conf:ro
       #- ./turn/turnuserdb.txt:/etc/turnserver/turnuserdb.txt:ro
-      - ./certs:/etc/letsencrypt/live/your.domain:ro
+      - ${LETSENCRYPT_PATH}:${LETSENCRYPT_PATH}:ro 
     expose:
       - "3478/udp"
       - "3478/tcp"
@@ -70,7 +74,7 @@ services:
       - 80:80
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./certs:/etc/nginx/certs:ro
+      - ${LETSENCRYPT_PATH}:/etc/nginx/certs:ro
     depends_on:
       - websocket
       - janus

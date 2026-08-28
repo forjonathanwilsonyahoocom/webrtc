@@ -11,6 +11,19 @@ openssl req -x509 -nodes -newkey rsa:2048 \
   -subj "/CN=localhost" \
   -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
 
+OR get "real" certs:
+
+devops@v2703387:~$ sudo systemctl status certbot
+○ certbot.service - Certbot
+     Loaded: loaded (/lib/systemd/system/certbot.service; static)
+     Active: inactive (dead)
+TriggeredBy: ● certbot.timer
+       Docs: file:///usr/share/doc/python-certbot-doc/html/index.ht>
+             https://certbot.eff.org/docs
+devops@v2703387:~$ sudo certbot certonly --standalone -d your.website.place
+
+
+
 
 ### Explanation
 
