@@ -1,5 +1,3 @@
-import "webrtc-adapter";
-
 const Janus = window.Janus;
 
 if (!Janus) {

@@ -9,6 +9,9 @@ COPY index.html ./
 COPY src/ ./src/
 COPY public/ ./public/
 
+
+RUN cp node_modules/webrtc-adapter/out/adapter.js public/webrtc-adapter.js
+
 RUN npm run build
 
 

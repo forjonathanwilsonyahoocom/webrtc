@@ -3,11 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Janus Audio Room</title>
+    <title>Audio Room</title>
   </head>
   <body>
-    <h1>Janus Audio Room</h1>
+    <form id="joinForm" style="display:none;">
+      <input id="room" placeholder="Room #">
+      <input id="display" placeholder="Display name">
+      <button>Join</button>
+    </form>
 
+
+    <div id="app"></div>
+
+    <script src="/webrtc-adapter.js"></script>
     <script src="/janus.js"></script>
     <script type="module" src="/src/main.js"></script>
   </body>
