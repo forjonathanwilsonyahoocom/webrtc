@@ -1,24 +1,42 @@
 # webrtc
 
 **ALPHA DO NOT USE THIS, EDUCATIONAL PURPOSES ONLY**
+for dev you can sign you own certs with:
 
-mkdir -p certs
-
+   ```bash
 openssl req -x509 -nodes -newkey rsa:2048 \
   -keyout certs/privkey.pem \
   -out certs/fullchain.pem \
   -days 365 \
   -subj "/CN=localhost" \
   -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
+   ```
+
+2. **Generate certs** (or use Let’s Encrypt in dev) and place them under `$LETSENCRYPT_PATH`. 
+
+   ```bash
+$ sudo certbot certonly --standalone -d your.website.place
+   ```
+3. **Generate a real TURN password hash**:  
+
+   ```bash
+   openssl passwd -1 demo > /tmp/demo.hash
+   # copy the output into turnuserdb.txt
+   demo:<hash_from_file>:never
+   ```
+
+
 
 OR get "real" certs:
 
-$ sudo certbot certonly --standalone -d your.website.place
 
 
 this project relies on a .env file that you need to create in the root of the project with your url, and cert path
-LETSENCRYPT_PATH=/some/path/to/your/certs
-ENDPOINT=subdomain.ofadomain.tld or whatever you are calling
+   ```dotenv
+   LETSENCRYPT_PATH=/path/to/letsencrypt
+   ENDPOINT=demo.example.com
+   ```
+
 ### Explanation
 
 | Section | What it does |
