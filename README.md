@@ -3,54 +3,47 @@
 **ALPHA DO NOT USE THIS, EDUCATIONAL PURPOSES ONLY**
 for dev you can sign you own certs with:
 
-   ```bash
+```bash
 openssl req -x509 -nodes -newkey rsa:2048 \
   -keyout certs/privkey.pem \
   -out certs/fullchain.pem \
   -days 365 \
   -subj "/CN=localhost" \
   -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
-   ```
+```
 
 2. **Generate certs** (or use Let’s Encrypt in dev) and place them under `$LETSENCRYPT_PATH`. 
 
-   ```bash
-$ sudo certbot certonly --standalone -d your.website.place
-   ```
+```bash
+sudo certbot certonly --standalone -d your.website.place
+```
 3. **Generate a real TURN password hash**:  
 
-   ```bash
-   openssl passwd -1 demo > /tmp/demo.hash
-   # copy the output into turnuserdb.txt
-   demo:<hash_from_file>:never
-   ```
-
-
-
-OR get "real" certs:
-
+```bash
+openssl passwd -1 demo > /tmp/demo.hash
+# copy the output into turnuserdb.txt
+demo:<hash_from_file>:never
+```
 
 
 this project relies on a .env file that you need to create in the root of the project with your url, and cert path
-   ```dotenv
-   LETSENCRYPT_PATH=/path/to/letsencrypt
-   ENDPOINT=demo.example.com
-   ```
+```dotenv
+LETSENCRYPT_PATH=/path/to/letsencrypt
+ENDPOINT=demo.example.com
+```
+
+this file is in the .gitignore to try to prevent me from checking it in :)
 
 ### Explanation
 
 | Section | What it does |
 |---------|--------------|
-| `coturn.build` | Builds the image from the Dockerfile you just created. |
 | `environment` | Passes variables into the container; you can also set `TURN_USER`/`TURN_PASS` if you want a simple username/password. |
 | `volumes` | *`turnserver.conf`*: overrides the image default with your TLS paths, port ranges, etc. <br>*`turnuserdb.txt`*: optional database file for many users.<br>*`certs`*: mount your Let's‑Encrypt certs. |
-| `expose` | Internal ports visible to other containers on the same bridge network. |
 | `proxy` | The reverse proxy exposes 443/80 to the world and forwards `/ws` → WebSocket server, `/janus` → Janus, and `/turn` → coturn (if you expose `/turn` on the proxy). |
 
 > **Optional**: If you prefer not to expose the TURN port to the outside world (you’ll only use it internally), simply omit the `ports` block under `coturn`. Only the proxy will reach it via the internal Docker 
 network.
-
-
 
 
 You can use the official `coturn/coturn` image from Docker Hub, but it doesn’t expose TLS out of the box.  
