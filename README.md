@@ -13,19 +13,12 @@ openssl req -x509 -nodes -newkey rsa:2048 \
 
 OR get "real" certs:
 
-devops@v2703387:~$ sudo systemctl status certbot
-○ certbot.service - Certbot
-     Loaded: loaded (/lib/systemd/system/certbot.service; static)
-     Active: inactive (dead)
-TriggeredBy: ● certbot.timer
-       Docs: file:///usr/share/doc/python-certbot-doc/html/index.ht>
-             https://certbot.eff.org/docs
-
 $ sudo certbot certonly --standalone -d your.website.place
 
 
-this relies on a .env file that you need to create in the root of the project with your url, and cert path
-
+this project relies on a .env file that you need to create in the root of the project with your url, and cert path
+LETSENCRYPT_PATH=/some/path/to/your/certs
+ENDPOINT=subdomain.ofadomain.tld or whatever you are calling
 ### Explanation
 
 | Section | What it does |
