@@ -26,7 +26,7 @@ services:
     image: janus-gateway:local
     container_name: janus
 
-    #ports:
+    ports:
     # - "8088:8088" 
     # - "8089:8089"
     # - "8188:8188"
