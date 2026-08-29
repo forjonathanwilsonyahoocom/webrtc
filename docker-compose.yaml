@@ -50,7 +50,7 @@ services:
       - ${LETSENCRYPT_PATH}:${LETSENCRYPT_PATH}:ro
       - ./janus/janus.jcfg:/opt/janus/etc/janus/janus.jcfg
       - ./janus/janus.transport.http.jcfg:/opt/janus/etc/janus/janus.transport.http.jcfg
-    mem_limit: 256m
+    mem_limit: 128m
     ulimits:
       nofile: 8192
 
