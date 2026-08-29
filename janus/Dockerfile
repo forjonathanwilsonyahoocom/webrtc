@@ -43,7 +43,12 @@ RUN sh autogen.sh && \
       --disable-rabbitmq \
       --disable-mqtt \
       --disable-docs \
-      --disable-data-channels && \
+      --disable-data-channels \
+      --disable-all-plugins \
+      --enable-plugin-videoroom \
+      --disable-all-transports \
+      --enable-rest \
+      --disable-all-handlers && \
     make -j"$(nproc)" && \
     make install && \
     make configs
