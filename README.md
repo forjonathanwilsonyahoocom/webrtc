@@ -20,10 +20,11 @@ devops@v2703387:~$ sudo systemctl status certbot
 TriggeredBy: ● certbot.timer
        Docs: file:///usr/share/doc/python-certbot-doc/html/index.ht>
              https://certbot.eff.org/docs
-devops@v2703387:~$ sudo certbot certonly --standalone -d your.website.place
+
+$ sudo certbot certonly --standalone -d your.website.place
 
 
-
+this relies on a .env file that you need to create in the root of the project with your url, and cert path
 
 ### Explanation
 
