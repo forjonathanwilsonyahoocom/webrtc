@@ -48,20 +48,17 @@ services:
   coturn:
     build: ./coturn
     environment:
-      #- TURN_USERDB=/etc/turnserver/turnuserdb.txt
-      - TURN_USER=demo
-      - TURN_PASS=demo
+      - TURN_USERDB=/etc/turnserver/turnuserdb.txt
+      #- TURN_USER=demo
+      #- TURN_PASS=demo
     volumes:
       - ./turn/turnserver.conf:/etc/turnserver/turnserver.conf:ro
-      #- ./turn/turnuserdb.txt:/etc/turnserver/turnuserdb.txt:ro
+      - ./turn/turnuserdb.txt:/etc/turnserver/turnuserdb.txt:ro
       - ${LETSENCRYPT_PATH}:/etc/letsencrypt/live/:ro 
-    expose:
-      - "3478/udp"
-      - "3478/tcp"
-      - "5349/tcp"
-    #ports:
+    ports:
       - "3478:3478/tcp"
       - "3478:3478/udp"
+      - "5349:5349/tcp"
     # If you want coturn to listen on the host’s external IP only:
     # networks:
     #   default:

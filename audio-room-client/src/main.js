@@ -18,7 +18,7 @@ Janus.init({
   debug: "all",
   callback: function () {
     janus = new Janus({
-      server: "https://10.42.0.1/janus", // adjust if needed
+      server: "https://${ENDPOINT}/janus", // adjust if needed
       success: function () {
         janus.attach({
           plugin: "janus.plugin.videoroom",

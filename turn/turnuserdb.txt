@@ -1,2 +1,2 @@
 # Format: username:hashed_password:expiry
-demo:$(openssl passwd -1 demo):never
+demo:$1$K7aAJEDq$zsSBp6T0utq8.Za30AoKW0:never
