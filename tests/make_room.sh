@@ -1,4 +1,4 @@
-JANUS=http://localhost:8088/janus
+JANUS=https://${ENDPOINT}/janus
 SESSION_ID=$(curl -s -X POST -H "Content-Type: application/json" \
    -d '{"janus":"create",
         "transaction":"t-create"
