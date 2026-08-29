@@ -1,11 +1,13 @@
-version: "3.9"
-
 services:
 
   frontend:
     build: ./audio-room-client
     expose:
       - "80"
+    mem_limit: 64m
+    ulimits:
+      nproc: 1024
+      nofile: 4096
 
   websocket:
     build: ./ws
@@ -15,6 +17,10 @@ services:
     expose:
       - "3000"
     restart: unless-stopped 
+    mem_limit: 64m
+    ulimits:
+      nofile: 4096
+
 
   janus:
     build:
@@ -44,6 +50,9 @@ services:
       - ${LETSENCRYPT_PATH}:${LETSENCRYPT_PATH}:ro
       - ./janus/janus.jcfg:/opt/janus/etc/janus/janus.jcfg
       - ./janus/janus.transport.http.jcfg:/opt/janus/etc/janus/janus.transport.http.jcfg
+    mem_limit: 256m
+    ulimits:
+      nofile: 8192
 
   coturn:
     build: ./coturn
@@ -59,6 +68,9 @@ services:
       - "3478:3478/tcp"
       - "3478:3478/udp"
       - "5349:5349/tcp"
+    mem_limit: 128m
+    ulimits:
+      nofile: 4096
     # If you want coturn to listen on the host’s external IP only:
     # networks:
     #   default:
@@ -72,6 +84,9 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ${LETSENCRYPT_PATH}:/etc/nginx/certs:ro
+    mem_limit: 128m
+    ulimits:
+      nofile: 4096
     depends_on:
       - websocket
       - janus
