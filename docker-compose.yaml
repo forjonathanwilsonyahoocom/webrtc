@@ -40,9 +40,6 @@ services:
      - "10000-10200:10000-10200/udp"
     # - "7088:7088"
     # - "7089:7089"
-    environment:
-      - JANUS_CERT_PEM=${LETSENCRYPT_PATH}/fullchain.pem
-      - JANUS_CERT_KEY=${LETSENCRYPT_PATH}/privkey.pem
 
     restart: unless-stopped
     # Optional: mount your own janus.cfg if you have one
