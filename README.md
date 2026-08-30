@@ -26,13 +26,17 @@ demo:<hash_from_file>:never
 ```
 
 
-this project relies on a .env file that you need to create in the root of the project with your url, and cert path
+this project relies on a .env file that you need to create in the root of the project with your cert path
 ```dotenv
 LETSENCRYPT_PATH=/path/to/letsencrypt
-ENDPOINT=demo.example.com
 ```
+that file is excluded in .gitignore
 
-this file is in the .gitignore to try to prevent me from checking it in :)
+there are multiple occurances of the string ${ENDPOINT} that you can replace with your actual endpoint
+
+```bash
+find . -type f -exec sed -i 's/\${ENDPOINT}/www.example.com/g' {} \;
+```
 
 ### Explanation
 
