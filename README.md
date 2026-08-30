@@ -39,6 +39,17 @@ find . -type f -exec sed -i 's/\${ENDPOINT}/www.example.com/g' {} \;
 ```
 
 there are multiple occurances of the string ${EXTERNAL_IP} that you can replace with your actual external ip
+
+open firewall:
+
+```bash
+sudo ufw allow 443/tcp
+sudo ufw allow 10000:10050/udp
+sudo ufw allow 3478/tcp
+sudo ufw allow 3478/udp
+sudo ufw allow 5349/tcp
+```
+
 ### Explanation
 
 | Section | What it does |
