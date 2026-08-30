@@ -38,6 +38,7 @@ there are multiple occurances of the string ${ENDPOINT} that you can replace wit
 find . -type f -exec sed -i 's/\${ENDPOINT}/www.example.com/g' {} \;
 ```
 
+there are multiple occurances of the string ${EXTERNAL_IP} that you can replace with your actual external ip
 ### Explanation
 
 | Section | What it does |
