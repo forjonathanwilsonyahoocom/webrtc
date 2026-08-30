@@ -50,6 +50,8 @@ services:
     mem_limit: 128m
     ulimits:
       nofile: 8192
+    depends_on:
+      - coturn
 
   coturn:
     build: ./coturn
