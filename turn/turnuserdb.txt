@@ -1,2 +1,0 @@
-# Format: username:hashed_password:expiry
-demo:$1$K7aAJEDq$zsSBp6T0utq8.Za30AoKW0:never
