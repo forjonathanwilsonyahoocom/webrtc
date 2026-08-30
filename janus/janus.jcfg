@@ -199,8 +199,8 @@ general: {
 # Finally, by default NIST P-256 certificates are generated (see #1997),
 # but RSA generation is still supported if you set 'rsa_private_key' to 'true'.
 certificates: {
-        cert_pem = "${LETSENCRYPT_PATH}/fullchain.pem"
-        cert_key = "${LETSENCRYPT_PATH}/privkey.pem"
+        cert_pem = "/etc/letsencrypt/live/fullchain.pem"
+        cert_key = "/etc/letsencrypt/live/privkey.pem"
 
 	#cert_pwd = "secretpassphrase"
 	#dtls_accept_selfsigned = false

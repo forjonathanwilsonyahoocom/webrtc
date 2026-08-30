@@ -71,8 +71,8 @@ cors: {
 # You can also disable insecure protocols and ciphers by configuring the
 # 'ciphers' property accordingly (no limitation by default).
 certificates: {
-        cert_pem = "${LETSENCRYPT_PATH}/fullchain.pem"
-        cert_key = "${LETSENCRYPT_PATH}/privkey.pem"
+        cert_pem = "/etc/letsencrypt/live/fullchain.pem"
+        cert_key = "/etc/letsencrypt/live/privkey.pem"
 
 	#cert_pwd = "secretpassphrase"
 	#ciphers = "PFS:-VERS-TLS1.0:-VERS-TLS1.1:-3DES-CBC:-ARCFOUR-128"
