@@ -1,7 +1,0 @@
-{
-  "name": "simple-websocket",
-  "private": true,
-  "dependencies": {
-    "ws": "8.18.0"
-  }
-}

@@ -1,27 +1,5 @@
 services:
 
-  frontend:
-    build: ./audio-room-client
-    expose:
-      - "80"
-    mem_limit: 64m
-    ulimits:
-      nproc: 1024
-      nofile: 4096
-
-  websocket:
-    build: ./ws
-    container_name: websocket
-    environment:
-      WS_PORT: 3000
-    expose:
-      - "3000"
-    restart: unless-stopped 
-    mem_limit: 64m
-    ulimits:
-      nofile: 4096
-
-
   janus:
     build:
       context: ./janus
@@ -75,8 +53,9 @@ services:
     #   default:
     #     ipv4_address: YOUR_VPS_IP
 
-  proxy:
-    image: nginx:stable-alpine
+  proxy-and-client:
+    build: ./audio-room-client
+    image: proxy-and-client:latest
     ports:
       - 443:443
       - 80:80
@@ -87,6 +66,5 @@ services:
     ulimits:
       nofile: 4096
     depends_on:
-      - websocket
       - janus
       - coturn
