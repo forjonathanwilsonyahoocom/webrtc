@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 FROM ubuntu:24.04 AS builder
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -43,21 +41,17 @@ RUN sh autogen.sh && \
       --disable-rabbitmq \
       --disable-mqtt \
       --disable-docs \
-      --disable-data-channels \          # data‑channels are not needed for voice
-      --disable-all-plugins \            # we’ll enable just the ones we want
-      --enable-plugin-audiobridge \      # the “audio bridge” plugin
-      # (or use --enable-plugin-audio-room if you prefer that one)
+      --disable-data-channels \
+      --disable-all-plugins \
+      --enable-plugin-audiobridge \
       --disable-all-transports \
-      --enable-ws \                      # WebSocket transport (recommended)
-      # --enable-http-poll \             # optional: long‑poll HTTP transport
-      --enable-rest \                    # REST handler (needed for the WebSocket)
-      --disable-all-handlers \           # we’ll enable only the ones we need
-      --enable-handler-audiobridge \     # handler for the audiobridge plugin
-      # (or --enable-handler-audio-room if using that plugin)
-    make -j"$(nproc)"
-    make install
+      --enable-ws \
+      --enable-rest \ 
+      --disable-all-handlers \ 
+      --enable-handler-audiobridge \ 
+    make -j"$(nproc)" && \
+    make install && \
     make configs
-
 
 FROM ubuntu:24.04 AS runtime
 
