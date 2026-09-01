@@ -48,7 +48,7 @@ RUN sh autogen.sh && \
       --enable-ws \
       --enable-rest \ 
       --disable-all-handlers \ 
-      --enable-handler-audiobridge \ 
+      --enable-handler-audiobridge && \ 
     make -j"$(nproc)" && \
     make install && \
     make configs
