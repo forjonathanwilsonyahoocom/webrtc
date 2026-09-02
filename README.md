@@ -51,7 +51,8 @@ sudo ufw allow 443/tcp && \
 sudo ufw allow 10000:10050/udp && \
 sudo ufw allow 3478/tcp && \
 sudo ufw allow 3478/udp && \
-sudo ufw allow 5349/tcp
+sudo ufw allow 5349/tcp && \
+sudo ufw allow 5349/udp
 ```
 then if you need to delete those rules
 
@@ -60,7 +61,8 @@ sudo ufw delete allow 443/tcp && \
 sudo ufw delete allow 10000:10050/udp && \
 sudo ufw delete allow 3478/tcp && \
 sudo ufw delete allow 3478/udp && \
-sudo ufw delete allow 5349/tcp
+sudo ufw delete allow 5349/tcp && \
+sudo ufw delete allow 5349/udp
 ```
 
 ### Explanation

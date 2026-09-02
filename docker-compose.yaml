@@ -45,13 +45,14 @@ services:
       - "3478:3478/tcp"
       - "3478:3478/udp"
       - "5349:5349/tcp"
+      - "5349:5349/udp"
     mem_limit: 128m
     ulimits:
       nofile: 4096
     # If you want coturn to listen on the host’s external IP only:
-    # networks:
-    #   default:
-    #     ipv4_address: YOUR_VPS_IP
+    networks:
+      default:
+        ipv4_address: ${EXTERNAL_IP}
 
   proxy-and-client:
     build: ./audio-room-client
