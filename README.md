@@ -40,14 +40,27 @@ find . -type f -exec sed -i 's/\${ENDPOINT}/www.example.com/g' {} \;
 
 there are multiple occurances of the string ${EXTERNAL_IP} that you can replace with your actual external ip
 
+```bash
+find . -type f -exec sed -i 's/\${EXTERNAL_IP}/1.1.1.1/g' {} \;
+```
+
 open firewall:
 
 ```bash
-sudo ufw allow 443/tcp
-sudo ufw allow 10000:10050/udp
-sudo ufw allow 3478/tcp
-sudo ufw allow 3478/udp
+sudo ufw allow 443/tcp && \
+sudo ufw allow 10000:10050/udp && \
+sudo ufw allow 3478/tcp && \
+sudo ufw allow 3478/udp && \
 sudo ufw allow 5349/tcp
+```
+then if you need to delete those rules
+
+```bash
+sudo ufw delete allow 443/tcp && \
+sudo ufw delete allow 10000:10050/udp && \
+sudo ufw delete allow 3478/tcp && \
+sudo ufw delete allow 3478/udp && \
+sudo ufw delete allow 5349/tcp
 ```
 
 ### Explanation
