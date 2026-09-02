@@ -45,10 +45,10 @@ RUN sh autogen.sh && \
       --disable-all-plugins \
       --enable-plugin-audiobridge \
       --disable-all-transports \
-      --enable-ws \
-      --enable-rest \ 
-      --disable-all-handlers \ 
-      --enable-handler-audiobridge && \ 
+      --enable-websockets \
+      --enable-rest \
+      --disable-all-handlers \
+      --enable-handler-audiobridge && \
     make -j"$(nproc)" && \
     make install && \
     make configs

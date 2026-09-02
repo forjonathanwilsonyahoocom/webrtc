@@ -1,53 +1,51 @@
 const Janus = window.Janus;
+if (!Janus) throw new Error('Janus JS library not loaded');
 
-if (!Janus) {
-  throw new Error("Janus JavaScript library was not loaded");
-}
-
-// ---- 1️⃣ Grab the URL query string
 const urlParams = new URLSearchParams(window.location.search);
-const myRoom = Number(urlParams.get('room')) || 1234;      // default 1234
-const displayName = urlParams.get('name') || 'Machine 1'; // default “Machine 1”
+const room = Number(urlParams.get('room')) || 1234;
+const displayName = urlParams.get('name') || 'Machine 1';
 
-console.log(`Joining room ${myRoom} as "${displayName}"`);
+console.log(`Joining audio room ${room} as "${displayName}"`);
 
-// ---- 2️⃣ Keep the rest of your code largely unchanged
-let janus, videoroom;
+let janus, audiobridge;
 
 Janus.init({
   debug: "all",
   callback: function () {
     janus = new Janus({
-      server: "https://${ENDPOINT}/janus", // adjust if needed
+      server: "wss://${ENDPOINT}/ws/janus", // <-- correct WS URL
       success: function () {
         janus.attach({
-          plugin: "janus.plugin.videoroom",
+          plugin: "janus.plugin.audiobridge",
           success: function (pluginHandle) {
-            videoroom = pluginHandle;
+            audiobridge = pluginHandle;
 
-            videoroom.send({
-              message: {
-                request: "join",
-                room: myRoom,
-                ptype: "publisher",
-                display: displayName
-              }
+            // 1️⃣ Create or join the room
+            audiobridge.send({
+              message: { request: "create", room: room, description: "audio room" }
+            });
+
+            // 2️⃣ Join the room as a publisher
+            audiobridge.send({
+              message: { request: "join", room: room, ptype: "publisher", display: displayName }
             });
           },
 
-          onmessage: function (message, jsep) {
-            if (jsep) videoroom.handleRemoteJsep({ jsep });
-
-            if (message.videoroom === "joined") {
-              publishAudioOnly();
+          onmessage: function (msg, jsep) {
+            // Handle the room’s response
+            if (msg.audiobridge === "joined") {
+              publishAudio();
             }
+
+            // If we receive a JSEP – it’s a remote participant’s offer
+            if (jsep) audiobridge.handleRemoteJsep({ jsep });
           },
 
           onlocaltrack: function (track, on) {
             if (on) {
               const audio = document.createElement("audio");
               audio.autoplay = true;
-              audio.muted = true;           // we don’t need to hear ourselves
+              audio.muted = true; // don't hear ourselves
               audio.srcObject = new MediaStream([track]);
               document.body.appendChild(audio);
             }
@@ -67,19 +65,18 @@ Janus.init({
   }
 });
 
-function publishAudioOnly() {
-  videoroom.createOffer({
+function publishAudio() {
+  audiobridge.createOffer({
     media: { audio: true, video: false },
     success: function (jsep) {
-      videoroom.send({
+      audiobridge.send({
         message: { request: "publish", audio: true, video: false },
         jsep: jsep
       });
     },
-    error: function (error) {
-      console.error("Could not create audio offer:", error);
+    error: function (err) {
+      console.error('Failed to create offer', err);
     }
   });
 }
-
 
