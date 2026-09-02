@@ -1,113 +1,147 @@
 const Janus = window.Janus;
-if (!Janus) throw new Error('Janus JS library not loaded');
+if (!Janus) throw new Error("Janus JS library not loaded");
 
 const urlParams = new URLSearchParams(window.location.search);
-const room = Number(urlParams.get('room')) || 1234;
-const displayName = urlParams.get('name') || 'Machine 1';
+const room = Number(urlParams.get("room")) || 1234;
+const displayName = urlParams.get("name") || "Machine 1";
 
 console.log(`Joining audio room ${room} as "${displayName}"`);
 
-let janus, audiobridge;
+let janus;
+let audiobridge;
 
 Janus.init({
   debug: "all",
+
   callback: function () {
     janus = new Janus({
-      server: "wss://${ENDPOINT}/ws/janus", // <-- correct WS URL
+      server: "wss://${ENDPOINT}/ws/janus",
+
       success: function () {
         janus.attach({
           plugin: "janus.plugin.audiobridge",
+          opaqueId: "audiobridgetest-" + Janus.randomString(12),
+          trickle: false, // <-- Add this line explicitly to disable trickle ICE
+           
           success: function (pluginHandle) {
             audiobridge = pluginHandle;
+            Janus.log("Plugin attached! (" + audiobridge.getPlugin() + ", id=" + audiobridge.getId() + ")");
+       
+            console.log("AudioBridge attached:", audiobridge.getId());
 
-            // 1️⃣ Create or join the room
+            // Room 1234 already exists; don't create it.
             audiobridge.send({
-              message: { request: "create", room: room, description: "audio room" }
+              message: {
+                request: "join",
+                room: room,
+                ptype: "publisher",
+                display: displayName
+              }
             });
+          },
 
-            // 2️⃣ Join the room as a publisher
-            audiobridge.send({
-              message: { request: "join", room: room, ptype: "publisher", display: displayName }
-            });
+          error: function (error) {
+            console.error("AudioBridge attach error:", error);
           },
 
           onmessage: function (msg, jsep) {
-          
             console.log("JANUS MESSAGE:", JSON.stringify(msg, null, 2));
 
             if (jsep) {
-                console.log("========== JANUS JSEP ==========");
-                console.log("type:", jsep.type);
-                console.log(jsep.sdp);
-                console.log("================================");
+              console.log("========== JANUS JSEP ==========");
+              console.log(jsep);
+              console.log("================================");
 
-                audiobridge.handleRemoteJsep({ jsep });
+              audiobridge.handleRemoteJsep({
+                jsep: jsep
+              });
             }
-    
-            // Handle the room’s response
+
             if (msg.audiobridge === "joined") {
+              console.log("JOINED — publishing audio");
               publishAudio();
             }
-
-            // If we receive a JSEP – it’s a remote participant’s offer
-            if (jsep) audiobridge.handleRemoteJsep({ jsep });
           },
 
           onlocaltrack: function (track, on) {
-              console.log("LOCAL TRACK:", {
-                id: track.id,
-                kind: track.kind,
-                enabled: track.enabled,
-                readyState: track.readyState,
-                on: on
+            console.log("LOCAL TRACK:", {
+              id: track.id,
+              kind: track.kind,
+              enabled: track.enabled,
+              readyState: track.readyState,
+              on: on
             });
-            if (on) {
-              const audio = document.createElement("audio");
-              audio.autoplay = true;
-              audio.muted = true; // don't hear ourselves
-              audio.srcObject = new MediaStream([track]);
-              document.body.appendChild(audio);
-            }
           },
 
           onremotetrack: function (track, mid, on) {
-                  
             console.log("REMOTE TRACK:", {
-                id: track.id,
-                kind: track.kind,
-                enabled: track.enabled,
-                readyState: track.readyState,
-                readyState: track.readyState,
-                readyState: track.readyState,
-                m: mid
+              id: track.id,
+              kind: track.kind,
+              enabled: track.enabled,
+              readyState: track.readyState,
+              mid: mid,
+              on: on
             });
+
             if (on && track.kind === "audio") {
               const audio = document.createElement("audio");
               audio.autoplay = true;
+              audio.playsInline = true;
               audio.srcObject = new MediaStream([track]);
+
               document.body.appendChild(audio);
+
+              audio.play().catch(err => {
+                console.error("Remote audio play failed:", err);
+              });
             }
           },
+
           onicecandidate: function (candidate) {
-             console.log("ICE CANDIDATE:", candidate);
+            console.log("ICE CANDIDATE:", candidate);
           }
         });
+      },
+
+      error: function (error) {
+        console.error("Janus error:", error);
+      },
+
+      destroyed: function () {
+        console.log("Janus destroyed");
       }
     });
   }
 });
 
 function publishAudio() {
+  console.log("Creating audio offer...");
+
   audiobridge.createOffer({
-    media: { audio: true, video: false },
+    media: {
+      audio: true,
+      video: false
+    },
+
+    trickle: false,
+    
     success: function (jsep) {
+      console.log("========== LOCAL OFFER ==========");
+      console.log(jsep);
+      console.log("=================================");
+        
       audiobridge.send({
-        message: { request: "publish", audio: true, video: false },
+        message: {
+          request: "publish",
+          audio: true,
+          video: false
+        },
         jsep: jsep
       });
     },
+
     error: function (err) {
-      console.error('Failed to create offer', err);
+      console.error("Failed to create offer:", err);
     }
   });
 }
