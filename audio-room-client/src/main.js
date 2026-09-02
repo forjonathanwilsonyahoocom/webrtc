@@ -32,6 +32,18 @@ Janus.init({
           },
 
           onmessage: function (msg, jsep) {
+          
+            console.log("JANUS MESSAGE:", JSON.stringify(msg, null, 2));
+
+            if (jsep) {
+                console.log("========== JANUS JSEP ==========");
+                console.log("type:", jsep.type);
+                console.log(jsep.sdp);
+                console.log("================================");
+
+                audiobridge.handleRemoteJsep({ jsep });
+            }
+    
             // Handle the room’s response
             if (msg.audiobridge === "joined") {
               publishAudio();
@@ -42,6 +54,13 @@ Janus.init({
           },
 
           onlocaltrack: function (track, on) {
+              console.log("LOCAL TRACK:", {
+                id: track.id,
+                kind: track.kind,
+                enabled: track.enabled,
+                readyState: track.readyState,
+                on: on
+            });
             if (on) {
               const audio = document.createElement("audio");
               audio.autoplay = true;
@@ -52,12 +71,25 @@ Janus.init({
           },
 
           onremotetrack: function (track, mid, on) {
+                  
+            console.log("REMOTE TRACK:", {
+                id: track.id,
+                kind: track.kind,
+                enabled: track.enabled,
+                readyState: track.readyState,
+                readyState: track.readyState,
+                readyState: track.readyState,
+                m: mid
+            });
             if (on && track.kind === "audio") {
               const audio = document.createElement("audio");
               audio.autoplay = true;
               audio.srcObject = new MediaStream([track]);
               document.body.appendChild(audio);
             }
+          },
+          onicecandidate: function (candidate) {
+             console.log("ICE CANDIDATE:", candidate);
           }
         });
       }
