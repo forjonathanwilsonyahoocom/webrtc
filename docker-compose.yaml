@@ -49,10 +49,6 @@ services:
     mem_limit: 128m
     ulimits:
       nofile: 4096
-    # If you want coturn to listen on the host’s external IP only:
-    networks:
-      default:
-        ipv4_address: ${EXTERNAL_IP}
 
   proxy-and-client:
     build: ./audio-room-client
