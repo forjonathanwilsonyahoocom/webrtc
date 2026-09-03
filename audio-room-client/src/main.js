@@ -21,7 +21,7 @@ Janus.init({
         janus.attach({
           plugin: "janus.plugin.audiobridge",
           opaqueId: "audiobridgetest-" + Janus.randomString(12),
-          trickle: false, // <-- Add this line explicitly to disable trickle ICE
+        //  trickle: false, // <-- Add this line explicitly to disable trickle ICE
            
           success: function (pluginHandle) {
             audiobridge = pluginHandle;
@@ -123,7 +123,7 @@ function publishAudio() {
       video: false
     },
 
-    trickle: false,
+   // trickle: false,
     
     success: function (jsep) {
       console.log("========== LOCAL OFFER ==========");

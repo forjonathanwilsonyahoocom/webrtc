@@ -25,6 +25,8 @@ services:
       - ${LETSENCRYPT_PATH}:/etc/letsencrypt:ro
       - ./janus/janus.jcfg:/opt/janus/etc/janus/janus.jcfg
       - ./janus/janus.transport.http.jcfg:/opt/janus/etc/janus/janus.transport.http.jcfg
+      - ./janus/janus.plugin.audiobridge.jcfg:/opt/janus/etc/janus/janus.plugin.audiobridge.jcfg
+      - ./janus/janus.transport.websockets.jcfg:/opt/janus/etc/janus/janus.transport.websockets.jcfg
     mem_limit: 128m
     ulimits:
       nofile: 8192
