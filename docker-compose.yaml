@@ -30,12 +30,9 @@ services:
       nofile: 8192
     depends_on:
       - coturn
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   coturn:
     build: ./coturn  
-    network_mode: host
     environment:
       - TURN_USERDB=/etc/turnserver/turnuserdb.txt
       #- TURN_USER=demo

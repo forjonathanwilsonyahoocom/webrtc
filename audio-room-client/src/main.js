@@ -132,9 +132,8 @@ function publishAudio() {
         
       audiobridge.send({
         message: {
-          request: "publish",
-          audio: true,
-          video: false
+            request: "configure",
+            muted: false
         },
         jsep: jsep
       });
