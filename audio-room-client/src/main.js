@@ -16,7 +16,7 @@ Janus.init({
   callback: function () {
     janus = new Janus({
       server: "wss://${ENDPOINT}/ws/janus",
-      iceServers: ["${ENDPOINT}"],
+      iceServers: [{ urls: "${ENDPOINT}:"}],
       success: function () {
         janus.attach({
           plugin: "janus.plugin.audiobridge",
