@@ -96,7 +96,14 @@ Janus.init({
               });
             }
           },
-
+          mediaState: function (state) {
+            console.log("mediaState:", state);
+          },
+          
+          webrtcState: function (state) {
+            console.log("webrtcState:", state);
+          },
+          
           iceState: function (state) {
             console.log("ICE state:", state);
           }
