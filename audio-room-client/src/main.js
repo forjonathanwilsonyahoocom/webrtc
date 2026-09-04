@@ -4,6 +4,8 @@ if (!Janus) throw new Error("Janus JS library not loaded");
 const urlParams = new URLSearchParams(window.location.search);
 const room = Number(urlParams.get("room")) || 1234;
 const displayName = urlParams.get("name") || "Machine 1";
+const turnUser = urlParams.get("turnuser") || "you wont be allowed in without turnuser";
+const turnPass = urlParams.get("turnpass") || "and you wont be allowed in without turnpass";
 
 console.log(`Joining audio room ${room} as "${displayName}"`);
 
@@ -16,7 +18,9 @@ Janus.init({
   callback: function () {
     janus = new Janus({
       server: "wss://${ENDPOINT}/ws/janus",
-      iceServers: [{ urls: "turn:${ENDPOINT}:"}],
+      iceServers: [{ urls: "turn:${ENDPOINT}:",
+                     username: turnUser,
+                     credential: turnPass}],
       success: function () {
         janus.attach({
           plugin: "janus.plugin.audiobridge",
