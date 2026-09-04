@@ -6,8 +6,6 @@ COPY package*.json ./
 RUN npm install
 
 COPY index.html ./
-COPY favicon.ico ./
-COPY apple-touch-icon.png  ./
 COPY src/ ./src/
 COPY public/ ./public/
 
@@ -18,6 +16,9 @@ RUN npm run build
 
 
 FROM nginx:alpine
+
+COPY favicon.ico /usr/share/nginx/html/
+COPY apple-touch-icon.png  /usr/share/nginx/html/
 
 COPY --from=build /app/dist/ /usr/share/nginx/html/
 #make invalid self signed cert to use for any scanner traffic
