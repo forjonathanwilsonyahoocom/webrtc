@@ -6,6 +6,8 @@ COPY package*.json ./
 RUN npm install
 
 COPY index.html ./
+COPY favicon.ico ./
+COPY apple-touch-icon.png  ./
 COPY src/ ./src/
 COPY public/ ./public/
 
